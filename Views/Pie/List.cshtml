@@ -1,8 +1,5 @@
 ﻿@model PieListViewModel
 
-@{
-    CultureInfo cultureEuro = new CultureInfo("en-IE");
-}
 
 <h1>@Model.CurrentCategory</h1>
 
@@ -19,10 +16,10 @@
 
                     <div class="d-flex justify-content-between mt-2">
                         <h2 class="text-start">
-                            <a class="pie-link">@pie.Name</a>
+                            <a class="pie-link" asp-controller="Pie" asp-action="Details" asp-route-id="@pie.PieId" target="_blank">@pie.Name</a>
                         </h2>
                         <h5 class="text-nowrap">
-                            @pie.Price.ToString("C2", cultureEuro)
+                            @pie.Price.ToString("C2")
                         </h5>
                     </div>
                 </div>
