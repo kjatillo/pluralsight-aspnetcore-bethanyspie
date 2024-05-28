@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Pluralsight.AspNetCore.BethanysPie.Models;
 
 namespace Pluralsight.AspNetCore.BethanysPie
@@ -8,10 +9,14 @@ namespace Pluralsight.AspNetCore.BethanysPie
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddScoped<ICategoryRepository, MockCategoryRepository>();
-            builder.Services.AddScoped<IPieRepository, MockPieRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IPieRepository, PieRepository>();
 
             builder.Services.AddControllersWithViews();  // enables MVC
+            builder.Services.AddDbContext<BethanysPieDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration["ConnectionStrings:BethanysPieDbContextConnection"]);
+            });
 
             var app = builder.Build();
 
@@ -28,6 +33,8 @@ namespace Pluralsight.AspNetCore.BethanysPie
 
             app.MapDefaultControllerRoute();  // sets MVC defaults to route to views
             #endregion
+
+            DbInitialiser.Seed(app);
 
             app.Run();
         }
