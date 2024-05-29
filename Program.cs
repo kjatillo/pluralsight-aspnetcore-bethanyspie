@@ -12,6 +12,10 @@ namespace Pluralsight.AspNetCore.BethanysPie
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IPieRepository, PieRepository>();
 
+            builder.Services.AddScoped<IShoppingCart, ShoppingCart>(serviceProvider => ShoppingCart.GetCart(serviceProvider));
+            builder.Services.AddSession();
+            builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddControllersWithViews();  // enables MVC
             builder.Services.AddDbContext<BethanysPieDbContext>(options =>
             {
@@ -25,6 +29,7 @@ namespace Pluralsight.AspNetCore.BethanysPie
             /// Middleware components pipeline.
             /// </summary>
             app.UseStaticFiles();  // support for returning static files
+            app.UseSession();
 
             if (app.Environment.IsDevelopment())
             {
