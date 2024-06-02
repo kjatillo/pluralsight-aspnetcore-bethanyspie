@@ -12,12 +12,14 @@ namespace Pluralsight.AspNetCore.BethanysPie
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IPieRepository, PieRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
             builder.Services.AddScoped<IShoppingCart, ShoppingCart>(serviceProvider => ShoppingCart.GetCart(serviceProvider));
+
             builder.Services.AddSession();
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddControllersWithViews();  // enables MVC
+            builder.Services.AddRazorPages();  // enables Razor Pages
+
             builder.Services.AddDbContext<BethanysPieDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration["ConnectionStrings:BethanysPieDbContextConnection"]);
@@ -38,6 +40,7 @@ namespace Pluralsight.AspNetCore.BethanysPie
             }
 
             app.MapDefaultControllerRoute();  // sets MVC defaults to route to views
+            app.MapRazorPages();  // enables Razor Pages models
             #endregion
 
             DbInitialiser.Seed(app);
