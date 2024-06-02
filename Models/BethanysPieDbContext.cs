@@ -11,5 +11,20 @@ namespace Pluralsight.AspNetCore.BethanysPie.Models
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderDetail>()
+                .Property(o => o.Price)
+                .HasColumnType("decimal(20, 2)");
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.OrderTotal)
+                .HasColumnType("decimal(20, 2)");
+
+            modelBuilder.Entity<Pie>()
+                .Property(o => o.Price)
+                .HasColumnType("decimal(20, 2)");
+        }
     }
 }
